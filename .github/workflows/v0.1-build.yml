@@ -1,0 +1,36 @@
+name: SIE V0.1 Build
+
+on:
+  pull_request:
+    paths:
+      - "SIE-v0.1/**"
+      - ".github/workflows/v0.1-build.yml"
+  push:
+    branches: [main]
+    paths:
+      - "SIE-v0.1/**"
+      - ".github/workflows/v0.1-build.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: SIE-v0.1
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: SIE-v0.1/package-lock.json
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build application
+        run: npm run build
